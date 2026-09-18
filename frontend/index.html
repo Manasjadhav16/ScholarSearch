@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ScholarSearch — Find the scholarship you actually qualify for</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #2C3E63;
+    --gold: #D9A441;
+    --gold-dark: #A87A24;
+    --paper: #FAF8F3;
+    --paper-card: #FFFFFF;
+    --ink: #1F2430;
+    --ink-secondary: #5B6478;
+    --ink-muted: #9198A8;
+    --line: #E4E0D6;
+    --green: #2F7D5C;
+    --green-bg: #E7F4EE;
+    --coral: #C24C34;
+    --coral-bg: #FBEBE7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.5;
+  }
+  .serif { font-family: 'Source Serif 4', Georgia, serif; }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  header {
+    background: var(--navy);
+    color: #F4F1E8;
+    padding: 2.75rem 1.5rem 3.5rem;
+    position: relative;
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 0.75rem;
+  }
+  h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4.5vw, 42px);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  header p.sub {
+    color: #C7CCDA;
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0;
+  }
+
+  .search-card {
+    max-width: 900px;
+    margin: -2.25rem auto 0;
+    background: var(--paper-card);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(27,42,74,0.16);
+    padding: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .search-row { display: flex; gap: 10px; }
+  .search-row input[type="text"] {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+  }
+  .search-row input[type="text"]:focus {
+    outline: none;
+    border-color: var(--navy);
+  }
+  .search-row button {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0 22px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .search-row button:hover { background: var(--navy-light); }
+
+  .toggle-profile {
+    margin-top: 12px;
+    background: none;
+    border: none;
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .profile-panel {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .profile-panel.open { display: grid; }
+  .field label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+  }
+  .field select, .field input {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: #fff;
+  }
+
+  main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .results-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.25rem;
+    font-size: 13px;
+    color: var(--ink-secondary);
+  }
+  .results-meta .count { font-weight: 600; color: var(--ink); }
+
+  .scheme-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+  .scheme-main { flex: 1; min-width: 0; }
+  .scheme-name {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: var(--navy);
+  }
+  .scheme-provider { font-size: 13px; color: var(--ink-secondary); margin: 0 0 10px; }
+  .scheme-desc { font-size: 14px; color: var(--ink); margin: 0 0 12px; line-height: 1.6; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    font-size: 11.5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: #F0EFE9;
+    color: var(--ink-secondary);
+    font-weight: 500;
+  }
+  .tag.category { background: var(--green-bg); color: var(--green); }
+  .benefit-line {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .benefit-line .mono { color: var(--gold-dark); font-weight: 500; }
+  .scheme-link {
+    font-size: 13px;
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .scheme-link:hover { text-decoration: underline; }
+
+  .match-seal {
+    flex-shrink: 0;
+    width: 84px;
+    text-align: center;
+  }
+  .seal-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2.5px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #FFFDF7;
+  }
+  .seal-circle::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    border: 1px dashed var(--gold);
+    opacity: 0.5;
+  }
+  .seal-pct {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--navy);
+  }
+  .seal-label {
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gold-dark);
+    margin-top: 1px;
+  }
+  .seal-circle.low { border-color: var(--ink-muted); }
+  .seal-circle.low .seal-label { color: var(--ink-muted); }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ink-secondary);
+  }
+  .empty-state h3 { font-family: 'Source Serif 4', serif; color: var(--ink); margin-bottom: 6px; }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem 3rem;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 600px) {
+    .scheme-card { flex-direction: column; }
+    .match-seal { align-self: flex-end; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="eyebrow">Hybrid retrieval &middot; FTS5 + BM25 + eligibility scoring</p>
+    <h1>Find the scholarship you actually qualify for</h1>
+    <p class="sub">Search 45+ real Indian government and private scholarship programmes in plain language, or fill in your profile once and let ranking do the filtering.</p>
+  </div>
+</header>
+
+<div class="search-card">
+  <div class="search-row">
+    <input type="text" id="queryInput" placeholder="e.g. engineering scholarship for girls, or study abroad for OBC students" />
+    <button id="searchBtn">Search</button>
+  </div>
+  <button class="toggle-profile" id="toggleProfile">+ Add your profile for eligibility-matched results</button>
+  <div class="profile-panel" id="profilePanel">
+    <div class="field">
+      <label>Category</label>
+      <select id="p_category">
+        <option value="">Any</option>
+        <option>General</option><option>OBC</option><option>SC</option><option>ST</option>
+        <option>EWS</option><option>Minority</option><option>PWD</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Gender</label>
+      <select id="p_gender">
+        <option value="">Any</option><option>Female</option><option>Male</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>State</label>
+      <select id="p_state">
+        <option value="">Any</option><option>Maharashtra</option><option>All India</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Level</label>
+      <select id="p_level">
+        <option value="">Any</option><option>School</option><option>UG</option><option>PG</option>
+        <option>PhD</option><option>Diploma</option><option>Study Abroad</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Family income (₹/yr)</label>
+      <input type="number" id="p_income" placeholder="e.g. 250000" />
+    </div>
+    <div class="field">
+      <label>Marks (%)</label>
+      <input type="number" id="p_percentage" placeholder="e.g. 75" />
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="results-meta">
+    <span><span class="count" id="resultCount">—</span> schemes</span>
+    <span id="rankingMode"></span>
+  </div>
+  <div id="results"></div>
+</main>
+
+<footer>
+  ScholarSearch &middot; IR Mini Project &middot; ranking = &alpha;&middot;text relevance (BM25) + (1&minus;&alpha;)&middot;eligibility match
+</footer>
+
+<script>
+const API_BASE = 'http://127.0.0.1:5001/api';
+
+const el = id => document.getElementById(id);
+const resultsEl = el('results');
+const resultCountEl = el('resultCount');
+const rankingModeEl = el('rankingMode');
+
+el('toggleProfile').addEventListener('click', () => {
+  const panel = el('profilePanel');
+  panel.classList.toggle('open');
+  el('toggleProfile').textContent = panel.classList.contains('open')
+    ? '\u2212 Hide profile'
+    : '+ Add your profile for eligibility-matched results';
+});
+
+function getProfile() {
+  const profile = {};
+  const cat = el('p_category').value; if (cat) profile.category = cat;
+  const gender = el('p_gender').value; if (gender) profile.gender = gender;
+  const state = el('p_state').value; if (state) profile.state = state;
+  const level = el('p_level').value; if (level) profile.level = level;
+  const income = el('p_income').value; if (income) profile.income = parseInt(income, 10);
+  const pct = el('p_percentage').value; if (pct) profile.percentage = parseFloat(pct);
+  return profile;
+}
+
+function sealClass(score) {
+  return score >= 0.6 ? '' : 'low';
+}
+
+function renderResults(data) {
+  resultCountEl.textContent = data.count;
+  rankingModeEl.textContent = data.profile_applied
+    ? `\u03b1 = ${data.alpha} (text + eligibility)`
+    : (data.query ? 'text relevance only' : 'showing all');
+
+  if (data.results.length === 0) {
+    resultsEl.innerHTML = `<div class="empty-state"><h3>No matching schemes</h3><p>Try a broader query or fewer profile filters.</p></div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = data.results.map(s => `
+    <div class="scheme-card">
+      <div class="scheme-main">
+        <p class="scheme-name">${s.name}</p>
+        <p class="scheme-provider">${s.provider}</p>
+        <p class="scheme-desc">${s.description}</p>
+        <div class="tag-row">
+          <span class="tag category">${s.category}</span>
+          <span class="tag">${s.level}</span>
+          <span class="tag">${s.state}</span>
+          ${s.gender !== 'Any' ? `<span class="tag">${s.gender} only</span>` : ''}
+        </div>
+        <p class="benefit-line"><span class="mono">${s.benefit_amount}</span></p>
+        <a class="scheme-link" href="${s.url}" target="_blank" rel="noopener">Official portal &rarr;</a>
+      </div>
+      <div class="match-seal">
+        <div class="seal-circle ${sealClass(s.match_score)}">
+          <span class="seal-pct">${Math.round(s.match_score * 100)}%</span>
+          <span class="seal-label">match</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function runSearch() {
+  const query = el('queryInput').value.trim();
+  const profile = getProfile();
+  resultsEl.innerHTML = `<div class="empty-state">Searching…</div>`;
+  try {
+    const res = await fetch(`${API_BASE}/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, profile }),
+    });
+    const data = await res.json();
+    renderResults(data);
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="empty-state"><h3>Can't reach the backend</h3><p>Make sure the Flask API is running at ${API_BASE} (see README).</p></div>`;
+  }
+}
+
+el('searchBtn').addEventListener('click', runSearch);
+el('queryInput').addEventListener('keydown', e => { if (e.key === 'Enter') runSearch(); });
+['p_category','p_gender','p_state','p_level','p_income','p_percentage'].forEach(id => {
+  el(id).addEventListener('change', runSearch);
+});
+
+runSearch();
+</script>
+
+</body>
+</html>
