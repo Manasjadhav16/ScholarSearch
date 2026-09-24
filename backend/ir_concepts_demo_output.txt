@@ -1,0 +1,85 @@
+==============================================================================
+EXPERIMENT 2: TEXT PREPROCESSING
+==============================================================================
+
+Sample scheme: AICTE Pragati Scholarship for Girls
+Sample input document (description field):
+  Supports girl students admitted to AICTE-approved technical diploma and degree programmes, with preference for one girl per family, to reduce gender gap in technical education.
+
+------------------------------------------------------------------------------
+Step 1: Tokenization (nltk.word_tokenize, lowercase, alphabetic only)
+------------------------------------------------------------------------------
+Tokens (24):
+  ['supports', 'girl', 'students', 'admitted', 'to', 'technical', 'diploma', 'and', 'degree', 'programmes', 'with', 'preference', 'for', 'one', 'girl', 'per', 'family', 'to', 'reduce', 'gender', 'gap', 'in', 'technical', 'education']
+
+------------------------------------------------------------------------------
+Step 2: Stop Word Removal (NLTK English stopwords)
+------------------------------------------------------------------------------
+Tokens after stop word removal (18):
+  ['supports', 'girl', 'students', 'admitted', 'technical', 'diploma', 'degree', 'programmes', 'preference', 'one', 'girl', 'per', 'family', 'reduce', 'gender', 'gap', 'technical', 'education']
+
+------------------------------------------------------------------------------
+Step 3: Noun Group Identification (POS-tag, group consecutive NN/NNS/NNP/NNPS)
+------------------------------------------------------------------------------
+POS tags: [('supports', 'NNS'), ('girl', 'NN'), ('students', 'NNS'), ('admitted', 'VBD'), ('technical', 'JJ'), ('diploma', 'NN'), ('degree', 'NN'), ('programmes', 'NNS'), ('preference', 'VBP'), ('one', 'CD'), ('girl', 'NN'), ('per', 'IN'), ('family', 'NN'), ('reduce', 'VB'), ('gender', 'NN'), ('gap', 'NN'), ('technical', 'JJ'), ('education', 'NN')]
+Noun groups identified (6):
+  ['supports girl students', 'diploma degree programmes', 'girl', 'family', 'gender gap', 'education']
+
+------------------------------------------------------------------------------
+Step 4: Lemmatization (WordNetLemmatizer, default noun mode)
+------------------------------------------------------------------------------
+Tokens whose form changed after lemmatization (before -> after):
+  supports -> support
+  students -> student
+  programmes -> programme
+
+==============================================================================
+EXPERIMENT 7: INDEXING (INVERTED INDEX)
+==============================================================================
+
+Building a hand-rolled inverted index over all 45 scheme descriptions...
+Vocabulary size (unique terms): 358
+
+------------------------------------------------------------------------------
+Hand-built posting lists (0-based SCHEMES indices)
+------------------------------------------------------------------------------
+  'scholarship': [19, 25, 27, 29, 31, 34, 36, 39, 41, 44]
+  'girls': [10]
+  'abroad': [34]
+
+------------------------------------------------------------------------------
+SQLite FTS5 posting lists (SELECT rowid FROM schemes_fts WHERE schemes_fts MATCH ?)
+------------------------------------------------------------------------------
+
+Note: schemes_fts is a multi-column FTS5 index (name, provider, level,
+category, description, tags -- see seed_data.py), while our hand-built
+index above covers only the description field. To compare like with
+like, the FTS5 query below is restricted to the description column via
+FTS5's 'description:term' column-filter syntax, so both indexes are
+built over the exact same text.
+  'scholarship': [20, 26, 28, 30, 32, 35, 37, 40, 42, 45]
+
+  Term: 'scholarship'
+    Hand-built index (as 1-based scheme_ids): [20, 26, 28, 30, 32, 35, 37, 40, 42, 45]
+    FTS5 query result (rowid = scheme_id):     [20, 26, 28, 30, 32, 35, 37, 40, 42, 45]
+    Verdict: MATCH
+
+  'girls': [11]
+
+  Term: 'girls'
+    Hand-built index (as 1-based scheme_ids): [11]
+    FTS5 query result (rowid = scheme_id):     [11]
+    Verdict: MATCH
+
+  'abroad': [35]
+
+  Term: 'abroad'
+    Hand-built index (as 1-based scheme_ids): [35]
+    FTS5 query result (rowid = scheme_id):     [35]
+    Verdict: MATCH
+
+------------------------------------------------------------------------------
+RESULT: All three terms MATCH -- SQLite FTS5's schemes_fts table is
+functioning as a real inverted index, confirmed against a hand-built
+inverted index built independently from the same data.
+------------------------------------------------------------------------------

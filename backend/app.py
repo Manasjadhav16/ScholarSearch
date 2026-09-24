@@ -78,7 +78,10 @@ def expand_query(text: str) -> str:
     for w in words:
         if w in CATEGORY_SYNONYMS:
             for syn in CATEGORY_SYNONYMS[w]:
-                expanded.update(syn.lower().split())
+                for token in syn.lower().split():
+                    token = re.sub(r"[^a-z0-9]", "", token)
+                    if token:
+                        expanded.add(token)
     # FTS5 MATCH with OR across all (original + expanded) terms
     return " OR ".join(sorted(expanded)) if expanded else ""
 
@@ -88,29 +91,35 @@ def expand_query(text: str) -> str:
 def eligibility_match(profile: dict, scheme: sqlite3.Row) -> float:
     """
     Returns a 0-1 score for how well `profile` fits `scheme`'s stated
-    eligibility. Each criterion contributes an equal share; criteria the
-    user didn't specify, or the scheme doesn't restrict, are skipped
-    (neither help nor hurt the score).
+    eligibility. Gender and category are hard disqualifiers: a scheme
+    explicitly restricted to a different gender or category than the
+    profile's scores 0.0 outright, short-circuiting the rest of the
+    scoring. State/income/percentage/level remain soft, partial-credit
+    criteria weighted equally among themselves; criteria the user didn't
+    specify, or the scheme doesn't restrict, are skipped (neither help nor
+    hurt the score).
     """
-    points = 0.0
-    max_points = 0.0
+    # Gender: hard disqualifier. A scheme restricted to a gender other than
+    # the profile's gender is not eligible at all, regardless of how well
+    # other criteria line up.
+    if profile.get("gender"):
+        s_gender = (scheme["gender"] or "any").lower()
+        if s_gender != "any" and s_gender != profile["gender"].lower():
+            return 0.0
 
-    # Category (scheme category "General" / "Any" is open to everyone).
-    # Some schemes list multiple eligible categories separated by "/" or ",".
+    # Category: hard disqualifier. Scheme category "General"/"Any"/empty is
+    # open to everyone; otherwise the profile's category must overlap with
+    # one of the scheme's eligible categories (some schemes list multiple,
+    # separated by "/" or ",").
     if profile.get("category"):
-        max_points += 1
         s_cat_raw = (scheme["category"] or "").lower()
         s_cats = [c.strip() for c in re.split(r"[/,]", s_cat_raw) if c.strip()]
         p_cat = profile["category"].lower()
-        if s_cat_raw in ("general", "any", "") or p_cat in s_cats:
-            points += 1
+        if s_cat_raw not in ("general", "any", "") and p_cat not in s_cats:
+            return 0.0
 
-    # Gender
-    if profile.get("gender"):
-        max_points += 1
-        s_gender = (scheme["gender"] or "any").lower()
-        if s_gender == "any" or s_gender == profile["gender"].lower():
-            points += 1
+    points = 0.0
+    max_points = 0.0
 
     # State (All India schemes match everyone)
     if profile.get("state"):
@@ -187,13 +196,18 @@ def search():
 
         if not rows:
             # fall back to LIKE search if FTS finds nothing
-            like = f"%{query}%"
-            cur.execute("""
-                SELECT *, 0.0 as rank FROM schemes
-                WHERE name LIKE ? OR description LIKE ? OR tags LIKE ?
-                LIMIT 100
-            """, (like, like, like))
-            rows = cur.fetchall()
+            words = preprocess_query(query).split()
+            if words:
+                conditions = " OR ".join(
+                    "name LIKE ? OR description LIKE ? OR tags LIKE ?" for _ in words
+                )
+                params = [f"%{w}%" for w in words for _ in range(3)]
+                cur.execute(f"""
+                    SELECT *, 0.0 as rank FROM schemes
+                    WHERE {conditions}
+                    LIMIT 100
+                """, params)
+                rows = cur.fetchall()
     else:
         cur.execute("SELECT *, 0.0 as rank FROM schemes")
         rows = cur.fetchall()
@@ -206,7 +220,13 @@ def search():
     for r in rows:
         text_score = normalize_bm25(r["rank"], all_ranks) if query else 0.5
         elig_score = eligibility_match(profile, r) if has_profile else 0.5
-        hybrid = alpha * text_score + (1 - alpha) * elig_score
+        if has_profile and elig_score == 0.0:
+            # eligibility_match() hit a hard disqualifier (wrong gender/
+            # category) -- the scheme is flatly ineligible, so it always
+            # shows 0% match regardless of text relevance.
+            hybrid = 0.0
+        else:
+            hybrid = alpha * text_score + (1 - alpha) * elig_score
         row_dict = dict(r)
         row_dict.pop("rank", None)
         row_dict["text_score"] = round(text_score, 3)
