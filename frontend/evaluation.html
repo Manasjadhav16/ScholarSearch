@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ScholarSearch — Evaluation Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #2C3E63;
+    --gold: #D9A441;
+    --gold-dark: #A87A24;
+    --paper: #FAF8F3;
+    --paper-card: #FFFFFF;
+    --ink: #1F2430;
+    --ink-secondary: #5B6478;
+    --ink-muted: #9198A8;
+    --line: #E4E0D6;
+    --green: #2F7D5C;
+    --green-bg: #E7F4EE;
+    --coral: #C24C34;
+    --coral-bg: #FBEBE7;
+    --amber: #D98E2B;
+    --amber-bg: #FDF5E8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.5;
+  }
+  .serif { font-family: 'Source Serif 4', Georgia, serif; }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  header {
+    background: var(--navy);
+    color: #F4F1E8;
+    padding: 2.75rem 1.5rem 3.5rem;
+    position: relative;
+  }
+  .header-inner { max-width: 900px; margin: 0 auto; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 0.75rem;
+  }
+  .eyebrow-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .eyebrow-row .eyebrow { margin: 0; }
+  .nav-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: #F4F1E8;
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+  }
+  .nav-link:hover { color: var(--gold); }
+  h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4.5vw, 42px);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  header p.sub {
+    color: #C7CCDA;
+    font-size: 16px;
+    max-width: 560px;
+    margin: 0;
+  }
+
+  main { max-width: 900px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+  /* ---- Summary cards (overlap the header band, like index.html's search card) ---- */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: -2.25rem;
+    position: relative;
+    z-index: 2;
+  }
+  .summary-card {
+    background: var(--paper-card);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(27,42,74,0.12);
+    padding: 1.25rem 1.4rem;
+  }
+  .summary-card.featured {
+    border: 2.5px solid var(--gold);
+    background: #FFFDF7;
+  }
+  .summary-card h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 0 0 2px;
+  }
+  .summary-card .alpha-note {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin: 0 0 1rem;
+  }
+  .featured-badge {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    background: var(--amber-bg);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .metric-row { display: flex; gap: 1.5rem; }
+  .metric-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    margin-bottom: 2px;
+  }
+  .metric-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 26px;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+
+  /* ---- Sections ---- */
+  .section { margin-top: 2.5rem; }
+  .section-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 0 0 0.25rem;
+  }
+  .section-sub { font-size: 13px; color: var(--ink-secondary); margin: 0 0 1rem; }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+  }
+  .chart-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem 1.25rem;
+  }
+  .chart-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 0.75rem;
+  }
+  .chart-box { position: relative; height: 240px; }
+
+  /* ---- Per-query table ---- */
+  .table-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  th.num, td.num { text-align: right; }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.num { font-family: 'IBM Plex Mono', monospace; color: var(--navy); white-space: nowrap; }
+  td .qid { font-family: 'IBM Plex Mono', monospace; color: var(--ink-muted); margin-right: 8px; }
+  td.best { font-weight: 600; color: var(--gold-dark); }
+  tr.tradeoff td:first-child { box-shadow: inset 3px 0 0 var(--amber); }
+  tr.tradeoff { background: var(--amber-bg); }
+  .table-caption {
+    font-size: 12.5px;
+    color: var(--ink-secondary);
+    margin: 0.75rem 0 0;
+    line-height: 1.6;
+  }
+  .table-caption .swatch {
+    display: inline-block;
+    width: 3px;
+    height: 12px;
+    background: var(--amber);
+    vertical-align: -1px;
+    margin-right: 6px;
+  }
+
+  .meta-line {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 1rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ink-secondary);
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-top: -2.25rem;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 12px 32px rgba(27,42,74,0.12);
+  }
+  .empty-state h3 { font-family: 'Source Serif 4', serif; color: var(--ink); margin: 0 0 6px; }
+  .empty-state code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    background: #F0EFE9;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem 3rem;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow-row">
+      <p class="eyebrow">IR evaluation &middot; MAP &middot; NDCG@10</p>
+      <a class="nav-link" href="index.html">&larr; Back to search</a>
+    </div>
+    <h1>Evaluation Results</h1>
+    <p class="sub">How well each ranking strategy orders schemes, measured against a hand-labelled ground-truth test set of 9 queries and profiles.</p>
+  </div>
+</header>
+
+<main id="content">
+  <div class="empty-state">Loading evaluation results…</div>
+</main>
+
+<footer>
+  ScholarSearch &middot; IR Mini Project &middot; metrics computed by <span class="mono">backend/evaluate.py</span> over the top 10 results per query
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const API_BASE = 'http://127.0.0.1:5001/api';
+
+const STRATEGIES = [
+  { key: 'bm25_only',        name: 'BM25-only',        note: 'α = 1.0 · text relevance only',              color: '#1B2A4A' },
+  { key: 'eligibility_only', name: 'Eligibility-only', note: 'α = 0.0 · eligibility match only',          color: '#D9A441' },
+  { key: 'hybrid',           name: 'Hybrid',           note: 'α = 0.35 with a profile, 1.0 without',             color: '#9198A8', featured: true },
+];
+
+const contentEl = document.getElementById('content');
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+const fmt = v => Number(v).toFixed(4);
+
+function renderEmpty() {
+  contentEl.innerHTML = `
+    <div class="empty-state">
+      <h3>No evaluation results yet</h3>
+      <p>Run <code>python3 evaluate.py</code> in the backend folder first.</p>
+    </div>`;
+}
+
+function renderSummaryCards(strategies) {
+  return `
+    <div class="summary-grid">
+      ${STRATEGIES.map(s => `
+        <div class="summary-card${s.featured ? ' featured' : ''}">
+          ${s.featured ? '<span class="featured-badge">Project contribution</span>' : ''}
+          <h2>${s.name}</h2>
+          <p class="alpha-note">${s.note}</p>
+          <div class="metric-row">
+            <div>
+              <div class="metric-label">MAP</div>
+              <div class="metric-value">${fmt(strategies[s.key].map)}</div>
+            </div>
+            <div>
+              <div class="metric-label">Avg NDCG@10</div>
+              <div class="metric-value">${fmt(strategies[s.key].avg_ndcg_at_10)}</div>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderCharts() {
+  return `
+    <section class="section">
+      <h2 class="section-title">Strategy comparison</h2>
+      <p class="section-sub">Higher is better on both metrics (scale 0&ndash;1).</p>
+      <div class="chart-grid">
+        <div class="chart-card"><h3>Mean Average Precision (MAP)</h3><div class="chart-box"><canvas id="mapChart"></canvas></div></div>
+        <div class="chart-card"><h3>Average NDCG@10</h3><div class="chart-box"><canvas id="ndcgChart"></canvas></div></div>
+      </div>
+    </section>`;
+}
+
+function renderTable(perQuery) {
+  const rows = [...perQuery].sort((a, b) => a.query_id - b.query_id);
+  const tradeoffIds = rows
+    .filter(q => q.hybrid.average_precision < q.eligibility_only.average_precision)
+    .map(q => q.query_id);
+
+  const body = rows.map(q => {
+    const aps = STRATEGIES.map(s => q[s.key].average_precision);
+    const best = Math.max(...aps);
+    const isTradeoff = tradeoffIds.includes(q.query_id);
+    const title = isTradeoff
+      ? ' title="Known, documented trade-off: hybrid ranking scores below eligibility-only on this query. Not a bug."'
+      : '';
+    return `
+      <tr${isTradeoff ? ' class="tradeoff"' : ''}${title}>
+        <td><span class="qid">${q.query_id}</span>${escapeHtml(q.label)}</td>
+        ${aps.map(ap => `<td class="num${ap === best ? ' best' : ''}">${fmt(ap)}</td>`).join('')}
+      </tr>`;
+  }).join('');
+
+  const caption = tradeoffIds.length
+    ? `<span class="swatch"></span>Highlighted ${tradeoffIds.length === 1 ? 'row' : 'rows'} (query ${tradeoffIds.join(', ')}): Hybrid's AP is lower than Eligibility-only's. This is a known, documented limitation of the fixed &alpha; = 0.35 blend &mdash; a strong text match can outrank a better-qualified but textually thin scheme &mdash; not a bug.`
+    : `No query in this run has Hybrid AP below Eligibility-only. Rows where that happens (a known, documented trade-off of the fixed &alpha; blend, not a bug) are highlighted with an amber left border.`;
+
+  return `
+    <section class="section">
+      <h2 class="section-title">Per-query Average Precision</h2>
+      <p class="section-sub">Best score in each row is shown in bold gold.</p>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Query</th>
+              ${STRATEGIES.map(s => `<th class="num">${s.name} AP</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>${body}</tbody>
+        </table>
+      </div>
+      <p class="table-caption">${caption}</p>
+    </section>`;
+}
+
+function drawBarChart(canvasId, strategies, metric) {
+  if (typeof Chart === 'undefined') return;
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: STRATEGIES.map(s => s.name),
+      datasets: [{
+        data: STRATEGIES.map(s => strategies[s.key][metric]),
+        backgroundColor: STRATEGIES.map(s => s.color),
+        borderRadius: 6,
+        maxBarThickness: 64,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => fmt(ctx.parsed.y) } },
+      },
+      scales: {
+        y: {
+          min: 0,
+          max: 1,
+          ticks: { stepSize: 0.2, font: { family: "'IBM Plex Mono', monospace", size: 11 }, color: '#9198A8' },
+          grid: { color: '#E4E0D6' },
+        },
+        x: {
+          ticks: { font: { family: "'Inter', sans-serif", size: 12 }, color: '#5B6478' },
+          grid: { display: false },
+        },
+      },
+    },
+  });
+}
+
+function render(data) {
+  const generated = new Date(data.generated_at);
+  contentEl.innerHTML =
+    renderSummaryCards(data.strategies) +
+    renderCharts() +
+    renderTable(data.per_query) +
+    `<p class="meta-line">Results generated ${escapeHtml(isNaN(generated) ? data.generated_at : generated.toLocaleString())}</p>`;
+  drawBarChart('mapChart', data.strategies, 'map');
+  drawBarChart('ndcgChart', data.strategies, 'avg_ndcg_at_10');
+}
+
+async function load() {
+  try {
+    const res = await fetch(`${API_BASE}/evaluation`);
+    if (!res.ok) return renderEmpty();
+    render(await res.json());
+  } catch (err) {
+    renderEmpty();
+  }
+}
+
+load();
+</script>
+
+</body>
+</html>

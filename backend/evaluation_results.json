@@ -1,0 +1,271 @@
+{
+  "generated_at": "2026-10-01T11:48:59+00:00",
+  "strategies": {
+    "bm25_only": {
+      "map": 0.6358,
+      "avg_ndcg_at_10": 0.7027
+    },
+    "eligibility_only": {
+      "map": 0.884,
+      "avg_ndcg_at_10": 0.9423
+    },
+    "hybrid": {
+      "map": 0.884,
+      "avg_ndcg_at_10": 0.9423
+    }
+  },
+  "per_query": [
+    {
+      "query_id": 1,
+      "label": "study abroad masters scholarship",
+      "bm25_only": {
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.8889,
+        "precision_at_5": 1.0,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "eligibility_only": {
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.8889,
+        "precision_at_5": 1.0,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "hybrid": {
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.8889,
+        "precision_at_5": 1.0,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": 2,
+      "label": "scholarship for disabled students",
+      "bm25_only": {
+        "precision": 0.4,
+        "recall": 1.0,
+        "f1": 0.5714,
+        "precision_at_5": 0.8,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "eligibility_only": {
+        "precision": 0.4,
+        "recall": 1.0,
+        "f1": 0.5714,
+        "precision_at_5": 0.8,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "hybrid": {
+        "precision": 0.4,
+        "recall": 1.0,
+        "f1": 0.5714,
+        "precision_at_5": 0.8,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": 3,
+      "label": "scholarship for girls in engineering",
+      "bm25_only": {
+        "precision": 0.3,
+        "recall": 0.75,
+        "f1": 0.4286,
+        "precision_at_5": 0.6,
+        "average_precision": 0.6042,
+        "ndcg_at_10": 0.7537
+      },
+      "eligibility_only": {
+        "precision": 0.3,
+        "recall": 0.75,
+        "f1": 0.4286,
+        "precision_at_5": 0.6,
+        "average_precision": 0.6042,
+        "ndcg_at_10": 0.7537
+      },
+      "hybrid": {
+        "precision": 0.3,
+        "recall": 0.75,
+        "f1": 0.4286,
+        "precision_at_5": 0.6,
+        "average_precision": 0.6042,
+        "ndcg_at_10": 0.7537
+      }
+    },
+    {
+      "query_id": 4,
+      "label": "scholarship for scheduled caste students",
+      "bm25_only": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667,
+        "precision_at_5": 0.8,
+        "average_precision": 0.9667,
+        "ndcg_at_10": 0.9896
+      },
+      "eligibility_only": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667,
+        "precision_at_5": 0.8,
+        "average_precision": 0.9667,
+        "ndcg_at_10": 0.9896
+      },
+      "hybrid": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667,
+        "precision_at_5": 0.8,
+        "average_precision": 0.9667,
+        "ndcg_at_10": 0.9896
+      }
+    },
+    {
+      "query_id": 5,
+      "label": "minority scholarship for school students",
+      "bm25_only": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.4,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "eligibility_only": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.4,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "hybrid": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.4,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": 6,
+      "label": "PhD fellowship for OBC or disabled students",
+      "bm25_only": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.4,
+        "average_precision": 0.8333,
+        "ndcg_at_10": 0.9197
+      },
+      "eligibility_only": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.4,
+        "average_precision": 0.8333,
+        "ndcg_at_10": 0.9197
+      },
+      "hybrid": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.4,
+        "average_precision": 0.8333,
+        "ndcg_at_10": 0.9197
+      }
+    },
+    {
+      "query_id": 7,
+      "label": "Profile: SC, Male, UG, income ≤2L, 65%+",
+      "bm25_only": {
+        "precision": 0.1,
+        "recall": 0.0909,
+        "f1": 0.0952,
+        "precision_at_5": 0.2,
+        "average_precision": 0.0182,
+        "ndcg_at_10": 0.0851
+      },
+      "eligibility_only": {
+        "precision": 1.0,
+        "recall": 0.9091,
+        "f1": 0.9524,
+        "precision_at_5": 1.0,
+        "average_precision": 0.9091,
+        "ndcg_at_10": 1.0
+      },
+      "hybrid": {
+        "precision": 1.0,
+        "recall": 0.9091,
+        "f1": 0.9524,
+        "precision_at_5": 1.0,
+        "average_precision": 0.9091,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": 8,
+      "label": "Profile: General, Female, School",
+      "bm25_only": {
+        "precision": 0.1,
+        "recall": 0.2,
+        "f1": 0.1333,
+        "precision_at_5": 0.2,
+        "average_precision": 0.2,
+        "ndcg_at_10": 0.3392
+      },
+      "eligibility_only": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667,
+        "precision_at_5": 1.0,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "hybrid": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6667,
+        "precision_at_5": 1.0,
+        "average_precision": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": 9,
+      "label": "engineering scholarship",
+      "bm25_only": {
+        "precision": 0.1,
+        "recall": 0.5,
+        "f1": 0.1667,
+        "precision_at_5": 0.2,
+        "average_precision": 0.1,
+        "ndcg_at_10": 0.2372
+      },
+      "eligibility_only": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.2,
+        "average_precision": 0.6429,
+        "ndcg_at_10": 0.8175
+      },
+      "hybrid": {
+        "precision": 0.2,
+        "recall": 1.0,
+        "f1": 0.3333,
+        "precision_at_5": 0.2,
+        "average_precision": 0.6429,
+        "ndcg_at_10": 0.8175
+      }
+    }
+  ]
+}

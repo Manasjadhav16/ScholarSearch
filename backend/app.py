@@ -26,6 +26,7 @@ around 2 lakh" outrank a scheme that merely mentions those words but that
 the user doesn't actually qualify for.
 """
 
+import json
 import sqlite3
 import os
 import re
@@ -310,6 +311,18 @@ def stats():
             "by_state": by_state,
         }
     })
+
+
+EVALUATION_PATH = os.path.join(os.path.dirname(__file__), "evaluation_results.json")
+
+
+@app.route("/api/evaluation", methods=["GET"])
+def evaluation():
+    """Serve the latest IR evaluation results written by evaluate.py."""
+    if not os.path.exists(EVALUATION_PATH):
+        return jsonify({"error": "No evaluation results found. Run backend/evaluate.py first."}), 404
+    with open(EVALUATION_PATH) as f:
+        return jsonify(json.load(f))
 
 
 @app.route("/api/health", methods=["GET"])

@@ -49,6 +49,23 @@
     color: var(--gold);
     margin: 0 0 0.75rem;
   }
+  .eyebrow-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .eyebrow-row .eyebrow { margin: 0; }
+  .nav-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: #F4F1E8;
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+  }
+  .nav-link:hover { color: var(--gold); }
   h1 {
     font-family: 'Source Serif 4', Georgia, serif;
     font-weight: 600;
@@ -264,7 +281,10 @@
 
 <header>
   <div class="header-inner">
-    <p class="eyebrow">Hybrid retrieval &middot; FTS5 + BM25 + eligibility scoring</p>
+    <div class="eyebrow-row">
+      <p class="eyebrow">Hybrid retrieval &middot; FTS5 + BM25 + eligibility scoring</p>
+      <a class="nav-link" href="evaluation.html">View Evaluation &rarr;</a>
+    </div>
     <h1>Find the scholarship you actually qualify for</h1>
     <p class="sub">Search 45+ real Indian government and private scholarship programmes in plain language, or fill in your profile once and let ranking do the filtering.</p>
   </div>

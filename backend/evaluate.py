@@ -19,8 +19,11 @@ normalize_bm25, preprocess_query, get_db) so this runs standalone against
 the SQLite DB, without going through the Flask server.
 """
 
+import json
 import math
+import os
 import sqlite3
+from datetime import datetime, timezone
 
 from app import (
     expand_query,
@@ -31,6 +34,7 @@ from app import (
 )
 
 TOP_N = 10
+BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ---------------- GROUND TRUTH TEST SET ----------------
 
@@ -126,10 +130,14 @@ def _retrieve_rows(cur, query):
     return rows
 
 
-def rank_with_alpha(query, profile, alpha, top_n=TOP_N):
+def rank_with_alpha(query, profile, alpha, top_n=TOP_N, disqualify=False):
     """Rank all schemes for (query, profile) using a fixed alpha weighting
     of text_score vs eligibility_score (hybrid_score = alpha*text +
-    (1-alpha)*eligibility), returning the top_n scheme names."""
+    (1-alpha)*eligibility), returning the top_n scheme names.
+
+    disqualify=True mirrors search()'s hard-disqualifier override: with a
+    profile supplied, a scheme whose eligibility score is 0.0 (wrong
+    gender/category) scores 0.0 regardless of text relevance."""
     db = get_db()
     cur = db.cursor()
 
@@ -141,7 +149,10 @@ def rank_with_alpha(query, profile, alpha, top_n=TOP_N):
     for r in rows:
         text_score = normalize_bm25(r["rank"], all_ranks) if query else 0.5
         elig_score = eligibility_match(profile, r) if has_profile else 0.5
-        hybrid = alpha * text_score + (1 - alpha) * elig_score
+        if disqualify and has_profile and elig_score == 0.0:
+            hybrid = 0.0
+        else:
+            hybrid = alpha * text_score + (1 - alpha) * elig_score
         scored.append((r["name"], hybrid))
 
     db.close()
@@ -164,7 +175,7 @@ def rank_hybrid(query, profile):
     """Existing default behavior from search(): alpha=1.0 with no profile,
     alpha=0.35 with a profile."""
     alpha = 0.35 if profile else 1.0
-    return rank_with_alpha(query, profile, alpha=alpha)
+    return rank_with_alpha(query, profile, alpha=alpha, disqualify=True)
 
 
 STRATEGIES = [
@@ -172,6 +183,30 @@ STRATEGIES = [
     ("Eligibility-only", rank_eligibility_only),
     ("Hybrid", rank_hybrid),
 ]
+
+# Keys used for each strategy in evaluation_results.json
+STRATEGY_KEYS = {
+    "BM25-only": "bm25_only",
+    "Eligibility-only": "eligibility_only",
+    "Hybrid": "hybrid",
+}
+
+
+def summarize_profile(profile):
+    """Short human-readable label for a profile-only test case, e.g.
+    'Profile: SC, Male, UG, income ≤2L, 65%+'."""
+    parts = []
+    for field in ("category", "gender", "level"):
+        if profile.get(field):
+            parts.append(profile[field])
+    if profile.get("state") and profile["state"].lower() != "all india":
+        parts.append(profile["state"])
+    if profile.get("income") is not None:
+        lakhs = profile["income"] / 100000
+        parts.append(f"income ≤{lakhs:g}L")
+    if profile.get("percentage") is not None:
+        parts.append(f"{profile['percentage']}%+")
+    return "Profile: " + ", ".join(parts) if parts else "Profile: (empty)"
 
 
 # ---------------- IR METRICS ----------------
@@ -322,15 +357,60 @@ def build_report(per_query_rows, strategy_aps, strategy_ndcgs):
     return "\n".join(lines)
 
 
+def build_json(per_query_rows, strategy_aps, strategy_ndcgs):
+    """Serialize the already-computed metrics into the shape served by
+    GET /api/evaluation and rendered by frontend/evaluation.html."""
+    strategies = {}
+    for strat_name, _ in STRATEGIES:
+        aps = strategy_aps[strat_name]
+        ndcgs = strategy_ndcgs[strat_name]
+        strategies[STRATEGY_KEYS[strat_name]] = {
+            "map": round(sum(aps) / len(aps), 4) if aps else 0.0,
+            "avg_ndcg_at_10": round(sum(ndcgs) / len(ndcgs), 4) if ndcgs else 0.0,
+        }
+
+    per_query = []
+    for qi, case in enumerate(GROUND_TRUTH, start=1):
+        entry = {
+            "query_id": qi,
+            "label": case["query"] or summarize_profile(case["profile"]),
+        }
+        for r in per_query_rows:
+            if r["qi"] != qi:
+                continue
+            entry[STRATEGY_KEYS[r["strategy"]]] = {
+                "precision": round(r["precision"], 4),
+                "recall": round(r["recall"], 4),
+                "f1": round(r["f1"], 4),
+                "precision_at_5": round(r["p_at_5"], 4),
+                "average_precision": round(r["ap"], 4),
+                "ndcg_at_10": round(r["ndcg"], 4),
+            }
+        per_query.append(entry)
+
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "strategies": strategies,
+        "per_query": per_query,
+    }
+
+
 def main():
     per_query_rows, strategy_aps, strategy_ndcgs = evaluate()
     report = build_report(per_query_rows, strategy_aps, strategy_ndcgs)
     print(report)
 
-    out_path = "evaluation_results.txt"
-    with open(out_path, "w") as f:
+    txt_path = os.path.join(BACKEND_DIR, "evaluation_results.txt")
+    with open(txt_path, "w") as f:
         f.write(report + "\n")
-    print(f"\nResults written to {out_path}")
+
+    json_path = os.path.join(BACKEND_DIR, "evaluation_results.json")
+    with open(json_path, "w") as f:
+        json.dump(build_json(per_query_rows, strategy_aps, strategy_ndcgs), f,
+                  indent=2, ensure_ascii=False)
+
+    print(f"\nResults written to {txt_path}")
+    print(f"Results written to {json_path}")
 
 
 if __name__ == "__main__":
