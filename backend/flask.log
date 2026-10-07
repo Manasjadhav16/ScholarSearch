@@ -3,139 +3,31 @@
 WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5001
- * Running on http://172.16.0.15:5001
+ * Running on http://172.16.0.11:5001
 Press CTRL+C to quit
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 808-057-657
-127.0.0.1 - - [23/Sep/2026 22:37:59] "GET /api/health HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:38:36] "GET /api/health HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:38:36] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:41:13] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:41:13] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:41:33] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:41:33] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:41:47] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [23/Sep/2026 22:41:47] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:35:46] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:35:46] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:35:47] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:35:49] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:35:53] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:35:53] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:05] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:05] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:09] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:10] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:10] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:39] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:39] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:48] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:36:48] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:02] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:02] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:06] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:27] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:27] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:29] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:35] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:35] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:39] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:41] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:41] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:52] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:52] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:55] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:49:55] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:12] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:12] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:23] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:23] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:25] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:30] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:30] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:32] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 06:50:33] "POST /api/search HTTP/1.1" 200 -
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/app.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/app.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
-127.0.0.1 - - [24/Sep/2026 11:33:35] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:33:35] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:33:44] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:33:44] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:33:46] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:33:58] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:33:58] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:01] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:02] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:09] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:09] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:11] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:13] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:18] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:18] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:24] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:24] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:27] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:32] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:33] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [24/Sep/2026 11:34:33] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:24] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:24] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:27] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:27] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:47] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:47] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:49] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:51] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:56] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:56] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:32:58] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:33:06] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:33:06] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:33:10] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 07:33:10] "POST /api/search HTTP/1.1" 200 -
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/evaluate.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/evaluate.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/evaluate.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/evaluate.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/app.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
- * Detected change in '/Users/manasjadhav/Desktop/scholarsearch/backend/app.py', reloading
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 808-057-657
-127.0.0.1 - - [01/Oct/2026 17:20:22] "GET /api/evaluation HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:20:40] "GET /api/evaluation HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:22:24] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:22:24] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:22:45] "GET /api/evaluation HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:22:47] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:22:47] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:22:48] "GET /api/evaluation HTTP/1.1" 404 -
-127.0.0.1 - - [01/Oct/2026 17:23:44] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:23:44] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:23:46] "GET /api/evaluation HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:24:13] "OPTIONS /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:24:13] "POST /api/search HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:24:14] "GET /api/evaluation HTTP/1.1" 200 -
-127.0.0.1 - - [01/Oct/2026 17:24:15] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 21:59:58] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 21:59:58] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:04:11] "OPTIONS /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:04:11] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:04:12] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:31] "OPTIONS /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:31] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:31] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:31] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:49] "OPTIONS /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:49] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:49] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:05:50] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:06:11] "GET /api/evaluation HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:06:13] "GET /api/evaluation HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:06:51] "GET /api/evaluation HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:06:51] "OPTIONS /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:06:51] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:08:32] "OPTIONS /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:08:32] "POST /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:08:41] "GET /api/evaluation HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:08:59] "OPTIONS /api/search HTTP/1.1" 200 -
+127.0.0.1 - - [07/Oct/2026 22:08:59] "POST /api/search HTTP/1.1" 200 -

@@ -3,3 +3,5 @@ __pycache__/
 backend/scholarsearch.db
 .DS_Store
 venv/
+# Playwright CLI output (may contain credentials)
+.playwright-cli/

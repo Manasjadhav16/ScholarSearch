@@ -33,7 +33,9 @@ scholarsearch/
     seed_data.py       Builds scholarsearch.db with FTS5 + triggers
     requirements.txt
   frontend/
-    index.html          Single-file vanilla JS UI, no build step needed
+    index.html          Search page (vanilla JS, no build step needed)
+    evaluation.html     Evaluation dashboard (reads GET /api/evaluation)
+    styles.css          Shared reading-room theme for both pages
 ```
 
 ## Running it
