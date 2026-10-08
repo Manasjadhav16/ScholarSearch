@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E5A44'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='600' fill='%23FBF9F4'%3ES%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&family=Special+Elite&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
   /* ---------- Catalog desk (search) ---------- */
@@ -174,14 +174,61 @@
   .ranking-mode { font-size: 13px; color: var(--stone); }
   .ranking-mode .mono { color: var(--slate); }
 
-  /* ---------- Index cards ---------- */
+  /* Typewritten echo of the query */
+  .echo {
+    margin: 0 0 10px;
+    font-family: 'Special Elite', var(--font-mono);
+    font-size: 19px;
+    line-height: 1.4;
+    color: var(--charcoal);
+    min-height: 1.4em;
+    overflow-wrap: anywhere;
+  }
+  .echo-label { color: var(--stone); }
+  .echo-caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 2px;
+    margin-left: 2px;
+    background: var(--charcoal);
+    vertical-align: -2px;
+    animation: caret 900ms steps(1) infinite;
+  }
+  .echo.is-done .echo-caret { animation: caret 900ms steps(1) 3 forwards; }
+  @keyframes caret { 50% { opacity: 0; } }
+  .stamp-hint { font-size: 13px; color: var(--stone); margin: -8px 0 20px; }
+  .stamp-hint[hidden] { display: none; }
+
+  /* ---------- Index cards (applications on the desk) ---------- */
   .index-card {
     position: relative;
     padding: 20px 24px 16px;
-    margin-bottom: 16px;
-    transition: box-shadow var(--ease), border-color var(--ease);
+    margin-bottom: 18px;
+    border-top-right-radius: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.32 0 0 0 0 0.2 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    box-shadow: var(--e1);
+    transition: border-color var(--ease);
   }
-  .index-card:hover { box-shadow: var(--e1); border-color: var(--hairline-strong); }
+  .index-card:hover { border-color: var(--hairline-strong); }
+
+  /* Dog-eared corner: ::before cuts the corner back to the desk, ::after is the fold */
+  .index-card::before,
+  .index-card::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+  }
+  .index-card::before { background: linear-gradient(225deg, var(--paper) 50%, transparent 50%); }
+  .index-card::after {
+    background: linear-gradient(225deg, transparent 50%, #E2D8C3 50%, #F1EADC 85%);
+    border-bottom-left-radius: 4px;
+    filter: drop-shadow(-1px 2px 1.5px rgba(60, 45, 20, 0.16));
+  }
+  .index-card.is-loading::before, .index-card.is-loading::after { display: none; }
   .card-top {
     display: flex;
     justify-content: space-between;
@@ -206,26 +253,102 @@
   .card-title { font-size: 22px; line-height: 1.3; margin: 0 0 2px; }
   .card-provider { font-size: 14px; color: var(--slate); margin: 0; }
 
-  .stamp {
-    flex-shrink: 0;
-    min-width: 76px;
-    text-align: center;
-    padding: 6px 10px 5px;
-    border: 1.5px solid var(--accent);
-    border-radius: var(--r-sm);
-    color: var(--accent);
+  /* Wax seal: hybrid score, embossed */
+  .seal-wrap { flex-shrink: 0; text-align: center; margin: 4px 14px 0 0; }
+  .seal {
+    position: relative;
+    width: 66px;
+    height: 66px;
+    display: grid;
+    place-items: center;
+    border-radius: 50% 46% 52% 48% / 47% 53% 46% 52%;
+    background:
+      radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.18) 0 12%, transparent 30%),
+      radial-gradient(circle at 50% 50%, #3A6E53 0%, #2E5A44 55%, #1E3E2E 100%);
+    box-shadow:
+      inset 0 -3px 6px rgba(0, 0, 0, 0.28),
+      inset 0 2px 3px rgba(255, 255, 255, 0.12),
+      0 2px 3px rgba(40, 30, 15, 0.28),
+      0 0 0 3px rgba(46, 90, 68, 0.12);
   }
-  .stamp-pct {
-    display: block;
-    font-family: var(--font-mono);
+  .seal::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0, 0, 0, 0.22);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .seal-num {
+    position: relative;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1;
+    color: #8FBFA3;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.55), 1px 1px 0 rgba(255, 255, 255, 0.28);
     font-variant-numeric: tabular-nums;
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 1.1;
   }
-  .stamp-label { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.02em; }
-  .stamp.is-low { border-color: var(--hairline-strong); color: var(--slate); }
-  .stamp.is-ineligible { border-color: var(--hairline-strong); color: var(--stone); border-style: dashed; }
+  .seal-num small { font-size: 11px; margin-left: 1px; }
+  .seal-label { display: block; margin-top: 4px; font-size: 11px; font-weight: 500; color: var(--stone); }
+
+  /* Rubber stamp: decision from the real eligibility score */
+  .card-body { position: relative; }
+  .rubber-stamp {
+    --stamp: var(--accent);
+    position: absolute;
+    top: 50%;
+    margin-top: -24px;
+    right: calc(28px + var(--dx, 0px));
+    z-index: 2;
+    pointer-events: none;
+    padding: 7px 16px 6px;
+    border: 3px solid var(--stamp);
+    border-radius: 7px;
+    outline: 1.5px solid var(--stamp);
+    outline-offset: 3px;
+    color: var(--stamp);
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transform: rotate(var(--rot, -6deg));
+    filter: url(#stamp-ink);
+    mix-blend-mode: multiply;
+    opacity: 0.88;
+  }
+  .rubber-stamp.is-partial { --stamp: var(--warning); }
+  .rubber-stamp.is-ineligible { --stamp: var(--error); }
+
+  .index-card .card-top, .index-card .card-desc, .index-card .chips, .index-card .card-foot, .index-card .why { transition: opacity 400ms ease; }
+  .index-card.is-ineligible :is(.card-top, .card-desc, .chips, .card-foot, .why) { opacity: 0.55; }
+
+  /* Stamp-office motion (only applied when motion is allowed, see JS) */
+  .await-land, .await-stamp { opacity: 0; }
+  .index-card.land { animation: land 520ms cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+  @keyframes land {
+    from { opacity: 0; transform: translate(var(--lx, 0px), -32px) rotate(var(--lr, 2deg)); }
+    60%  { opacity: 1; transform: translate(0, 2px) rotate(calc(var(--lr, 2deg) * -0.25)); }
+    to   { opacity: 1; transform: none; }
+  }
+  .rubber-stamp.press { animation: press 420ms cubic-bezier(0.3, 0.7, 0.4, 1) both; }
+  @keyframes press {
+    0%   { opacity: 0;    transform: rotate(var(--rot)) scale(2.4); }
+    55%  { opacity: 0.92; transform: rotate(var(--rot)) scale(0.9); }
+    78%  { transform: rotate(var(--rot)) scale(1.05); }
+    100% { opacity: 0.88; transform: rotate(var(--rot)) scale(1); }
+  }
+  .index-card.thump { animation: thump 220ms ease-out; }
+  @keyframes thump {
+    40% { transform: translateY(2px) scale(0.996); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .await-land, .await-stamp { opacity: 1 !important; }
+    .index-card.land, .rubber-stamp.press, .index-card.thump { animation: none !important; }
+    .echo-caret { animation: none; }
+  }
 
   .card-desc { font-size: 15px; color: var(--charcoal); margin: 0 0 14px; max-width: 72ch; }
   .card-desc mark {
@@ -322,8 +445,23 @@
     .search-row .btn { min-height: 52px; padding: 0 18px; }
     .index-card { padding: 16px 16px 12px; }
     .card-title { font-size: 19px; }
-    .stamp { min-width: 64px; padding: 5px 8px 4px; }
-    .stamp-pct { font-size: 17px; }
+    .seal-wrap { margin-right: 10px; }
+    .seal { width: 54px; height: 54px; }
+    .seal::before { inset: 6px; }
+    .seal-num { font-size: 18px; }
+    /* No spare column on phones: the stamp gets its own row instead of covering text */
+    .card-body { display: flex; flex-direction: column; }
+    .rubber-stamp {
+      position: relative;
+      top: auto;
+      right: auto;
+      align-self: flex-end;
+      margin: 0 calc(10px + var(--dx, 0px) / 2) 16px 0;
+      font-size: 16px;
+      padding: 6px 11px 5px;
+      border-width: 2.5px;
+    }
+    .echo { font-size: 16px; }
     .why-row { grid-template-columns: minmax(0, 1fr) 52px; gap: 4px 12px; }
     .why-row .why-label { grid-column: 1 / -1; }
   }
@@ -331,6 +469,17 @@
 </head>
 <body>
 <a class="skip-link" href="#results">Skip to results</a>
+
+<!-- Rubber-stamp ink: warped edges + speckled, uneven fill -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="stamp-ink" x="-10%" y="-20%" width="120%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="7" result="warp" />
+    <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.5" xChannelSelector="R" yChannelSelector="G" result="rough" />
+    <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="3" result="grain" />
+    <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 2.15" result="speckle" />
+    <feComposite in="rough" in2="speckle" operator="in" />
+  </filter>
+</svg>
 
 <nav class="topnav" aria-label="Main">
   <div class="container">
@@ -417,10 +566,12 @@
 
   <section aria-labelledby="resultsHeading">
     <h2 id="resultsHeading" class="visually-hidden">Results</h2>
+    <p class="echo" id="echo"><span class="visually-hidden" id="echoFull"></span><span aria-hidden="true"><span class="echo-label" id="echoLabel"></span><span id="echoTyped"></span><span class="echo-caret"></span></span></p>
     <div class="results-meta" aria-live="polite">
       <span id="resultCount">Loading…</span>
       <span class="ranking-mode" id="rankingMode"></span>
     </div>
+    <p class="stamp-hint" id="stampHint" hidden>Add your reader profile and each application gets stamped with your eligibility.</p>
     <div id="results" tabindex="-1"></div>
   </section>
 </main>
@@ -630,21 +781,156 @@ function whyPanel(s, data, id) {
     </div>`;
 }
 
-function stamp(s, data) {
-  const ineligible = data.profile_applied && s.eligibility_score === 0;
-  const cls = ineligible ? ' is-ineligible' : (s.match_score >= 0.6 ? '' : ' is-low');
+// ---------- stamp office ----------
+// The decision comes only from the eligibility_score the API returned.
+// No profile means no eligibility was judged, so no stamp at all.
+const SOFT_FIELDS = ['state', 'level', 'income', 'percentage'];
+function stampDecision(s, data, profile) {
+  if (!data.profile_applied) return null;
+  const e = s.eligibility_score;
+  if (e === 0) return 'ineligible';
+  if (e === 1) return 'eligible';
+  // eligibility_match() returns a neutral 0.5 when the profile gives only
+  // gender/category (the hard checks) and the scheme passed them.
+  const softGiven = SOFT_FIELDS.some(f => profile && profile[f] !== undefined);
+  if (e === 0.5 && !softGiven) return 'eligible';
+  return 'partial';
+}
+
+// Stable pseudo-random per scheme, so a card keeps its tilt across re-renders
+function jitter(id, salt) {
+  const x = Math.sin(id * 12.9898 + salt * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+function sealHtml(s) {
+  const pct = Math.round(s.match_score * 100);
   return `
-    <div class="stamp${cls}" aria-label="${Math.round(s.match_score * 100)} percent match">
-      <span class="stamp-pct">${Math.round(s.match_score * 100)}%</span>
-      <span class="stamp-label">${ineligible ? 'ineligible' : 'match'}</span>
+    <div class="seal-wrap">
+      <div class="seal" role="img" aria-label="Hybrid score ${pct} percent">
+        <span class="seal-num">${pct}<small>%</small></span>
+      </div>
+      <span class="seal-label">hybrid</span>
     </div>`;
 }
 
-function renderResults(data) {
+function rubberStampHtml(decision, s) {
+  if (!decision) return '';
+  const label = { eligible: 'Eligible', partial: 'Partial', ineligible: 'Ineligible' }[decision];
+  return `<div class="rubber-stamp is-${decision}" role="img" aria-label="Stamped ${label}, eligibility ${fmt(s.eligibility_score)}" title="Eligibility match ${fmt(s.eligibility_score)}">${label}</div>`;
+}
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const LAND_MS = 520, LAND_GAP = 90, STAMP_GAP = 260, IMPACT_MS = 230;
+let animTimers = [];
+let animObserver = null;
+
+function later(fn, ms) { animTimers.push(setTimeout(fn, Math.max(0, ms))); }
+function cancelAnimations() {
+  animTimers.forEach(clearTimeout);
+  animTimers = [];
+  if (animObserver) { animObserver.disconnect(); animObserver = null; }
+}
+
+function settleCard(card) {
+  card.classList.remove('await-land', 'land', 'thump');
+  card.querySelector('.rubber-stamp')?.classList.remove('await-stamp', 'press');
+  if (card.dataset.decision === 'ineligible') card.classList.add('is-ineligible');
+}
+
+function landCard(card) {
+  card.classList.remove('await-land');
+  card.classList.add('land');
+  later(() => card.classList.remove('land'), LAND_MS + 20);
+}
+
+function pressStamp(card) {
+  const st = card.querySelector('.rubber-stamp');
+  if (!st) return;
+  st.classList.remove('await-stamp');
+  st.classList.add('press');
+  later(() => {
+    card.classList.add('thump');
+    if (card.dataset.decision === 'ineligible') card.classList.add('is-ineligible');
+  }, IMPACT_MS);
+  later(() => card.classList.remove('thump'), IMPACT_MS + 240);
+}
+
+// Cards land one by one as they come into view; once a batch has landed,
+// the stamps press down on each card in order.
+function playStampOffice() {
+  const cards = [...resultsEl.querySelectorAll('.index-card')];
+  if (reduceMotion.matches) { cards.forEach(settleCard); return; }
+
+  cards.forEach(c => {
+    c.classList.add('await-land');
+    c.querySelector('.rubber-stamp')?.classList.add('await-stamp');
+  });
+  let nextLand = performance.now();
+  let nextStamp = 0;
+
+  animObserver = new IntersectionObserver(entries => {
+    const now = performance.now();
+    const entering = entries.filter(e => e.isIntersecting).map(e => e.target)
+      .sort((a, b) => cards.indexOf(a) - cards.indexOf(b));
+    if (!entering.length) return;
+    entering.forEach(c => animObserver.unobserve(c));
+
+    let t = Math.max(now, nextLand);
+    const landAt = entering.map(() => { const at = t; t += LAND_GAP; return at; });
+    nextLand = t;
+    let s = Math.max(landAt[landAt.length - 1] + LAND_MS + 60, nextStamp);
+
+    entering.forEach((card, i) => {
+      later(() => landCard(card), landAt[i] - now);
+      if (card.querySelector('.rubber-stamp')) {
+        later(() => pressStamp(card), s - now);
+        s += STAMP_GAP;
+      }
+    });
+    nextStamp = s;
+  }, { threshold: 0.1 });
+
+  cards.forEach(c => animObserver.observe(c));
+}
+
+// Typewriter echo of the query above the results
+function typeEcho(query) {
+  const echo = el('echo');
+  const label = 'Filed under: ';
+  const text = query ? `“${query}”` : 'the full catalogue';
+  el('echoFull').textContent = label + text;
+  el('echoLabel').textContent = label;
+  echo.classList.remove('is-done');
+  if (reduceMotion.matches) {
+    el('echoTyped').textContent = text;
+    echo.classList.add('is-done');
+    return;
+  }
+  el('echoTyped').textContent = '';
+  [...text].forEach((ch, i) => later(() => {
+    el('echoTyped').textContent += ch;
+    if (i === text.length - 1) echo.classList.add('is-done');
+  }, 30 + i * 38 + (ch === ' ' ? 30 : 0)));
+}
+
+let lastProfile = {};
+
+function renderResults(data, { animate = false, profile = lastProfile } = {}) {
+  cancelAnimations();
   lastData = data;
+  lastProfile = profile;
   const all = data.results;
   renderFacets(all);
   const shown = all.filter(s => passes(s));
+  if (animate) {
+    typeEcho(data.query || '');
+  } else if (el('echoFull').textContent) {
+    // A filter change cancelled the typewriter: finish the line instantly
+    el('echoTyped').textContent = el('echoFull').textContent.slice(el('echoLabel').textContent.length);
+    el('echo').classList.add('is-done');
+  }
+  el('stampHint').hidden = data.profile_applied || all.length === 0;
 
   resultCountEl.innerHTML = shown.length === all.length
     ? `<strong>${all.length}</strong> ${all.length === 1 ? 'scheme' : 'schemes'}`
@@ -665,22 +951,33 @@ function renderResults(data) {
   const terms = queryTerms(data.query || '');
   resultsEl.innerHTML = shown.map(s => {
     const whyId = `why-${s.scheme_id}`;
+    const decision = stampDecision(s, data, profile);
+    const vars = [
+      `--rot:${(jitter(s.scheme_id, 1) * 14 - 8).toFixed(1)}deg`,
+      `--dx:${(jitter(s.scheme_id, 2) * 20 - 10).toFixed(0)}px`,
+      `--lr:${(jitter(s.scheme_id, 3) * 8 - 4).toFixed(1)}deg`,
+      `--lx:${(jitter(s.scheme_id, 4) * 30 - 15).toFixed(0)}px`,
+    ].join(';');
+    const settled = !animate && decision === 'ineligible' ? ' is-ineligible' : '';
     return `
-      <article class="card index-card">
+      <article class="card index-card${settled}" style="${vars}"${decision ? ` data-decision="${decision}"` : ''}>
         <div class="card-top">
           <div>
             <span class="call-number" title="Category · level · catalogue number">${escapeHtml(callNumber(s))}</span>
             <h3 class="card-title">${escapeHtml(s.name)}</h3>
             <p class="card-provider">${escapeHtml(s.provider)}</p>
           </div>
-          ${stamp(s, data)}
+          ${sealHtml(s)}
         </div>
-        <p class="card-desc">${highlight(s.description, terms)}</p>
-        <div class="chips">
-          <span class="chip chip-accent">${escapeHtml(s.category)}</span>
-          <span class="chip">${escapeHtml(s.level)}</span>
-          <span class="chip">${escapeHtml(s.state)}</span>
-          ${s.gender !== 'Any' ? `<span class="chip">${escapeHtml(s.gender)} only</span>` : ''}
+        <div class="card-body">
+          <p class="card-desc">${highlight(s.description, terms)}</p>
+          <div class="chips">
+            <span class="chip chip-accent">${escapeHtml(s.category)}</span>
+            <span class="chip">${escapeHtml(s.level)}</span>
+            <span class="chip">${escapeHtml(s.state)}</span>
+            ${s.gender !== 'Any' ? `<span class="chip">${escapeHtml(s.gender)} only</span>` : ''}
+          </div>
+          ${rubberStampHtml(decision, s)}
         </div>
         <div class="card-foot">
           <span class="benefit">${escapeHtml(s.benefit_amount)}</span>
@@ -692,6 +989,8 @@ function renderResults(data) {
         ${whyPanel(s, data, whyId)}
       </article>`;
   }).join('');
+
+  if (animate) playStampOffice();
 }
 
 resultsEl.addEventListener('click', e => {
@@ -703,6 +1002,7 @@ resultsEl.addEventListener('click', e => {
 });
 
 function renderLoading() {
+  cancelAnimations();
   resultCountEl.textContent = 'Searching…';
   resultsEl.innerHTML = Array.from({ length: 3 }, () => `
     <div class="card index-card is-loading" aria-hidden="true">
@@ -727,7 +1027,7 @@ async function runSearch() {
       body: JSON.stringify({ query, profile }),
     });
     const data = await res.json();
-    renderResults(data);
+    renderResults(data, { animate: true, profile });
   } catch (err) {
     resultCountEl.textContent = '';
     rankingModeEl.textContent = '';
