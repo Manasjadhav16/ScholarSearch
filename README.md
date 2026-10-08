@@ -12,9 +12,7 @@ index) with a structured eligibility-matching layer, so a search for
 anything mentioning "engineering" — it ranks schemes the user can actually
 apply to above ones they can't.
 
-**Team:** Manas Jadhav (02, 232064) · Reon Lemos (08, 232075) ·
-Swen Lemos (09, 232076) · Clive Lopes (10, 232080)
-**Guide:** Ms. Annies Minu · St. Francis Institute of Technology, Mumbai
+By Manas Jadhav, St. Francis Institute of Technology, Mumbai
 
 ---
 
